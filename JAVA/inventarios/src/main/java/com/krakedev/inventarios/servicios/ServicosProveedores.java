@@ -2,7 +2,9 @@ package com.krakedev.inventarios.servicios;
 
 import java.util.ArrayList;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -44,6 +46,24 @@ public class ServicosProveedores {
 		} catch (Karakedevexception e) {
 			return Response.serverError().build();
 		}
+	}
+	
+	
+	@Path("insertarNuevoProveedor")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response insertarProv(Proveedor pro) {
+		System.out.println("INSERTANDO PROVEEDOR>>>>>>>>>>>>>>>>>>>> "+pro);
+		ProveedoresBDD proveedoresNuevo = new ProveedoresBDD();
+		try {
+			proveedoresNuevo.insertar(pro);
+			return Response.ok().build();
+		} catch (Karakedevexception e) {
+		
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
+		
 	}
 	
 }

@@ -143,12 +143,15 @@ create table proveedores (
 	constraint proveedores_fk foreign key (tipo_docu) references tipo_documentos(codigo)
 );
 ------------------------------------
-insert into proveedores (indentificacion,tipo_docu,nombre,telefono,correo,direccion)
-values('85381254100','R','Karen Mendez','3217708848','karenmendez3@gmail.com','Bogota');
+insert into proveedores (indentificacion, tipo_docu, nombre, telefono, correo, direccion)
+values ('85381254100', 'R', 'Karen Mendez', '3217708848', 'karenmendez3@gmail.com', 'Bogota');
 
 ------------------------------------
-insert into proveedores (indentificacion,tipo_docu,nombre,telefono,correo,direccion)
-values('1755841002','C','Gabriela Altamirano','0984654995','nietogabriela353@gmail.com','Sangolqui');
+insert into proveedores (indentificacion, tipo_docu, nombre, telefono, correo, direccion)
+values ('1755841002', 'C', 'Gabriela Altamirano', '0984654995', 'nietogabriela353@gmail.com', 'Sangolqui');
+
+
+
 ------------------------------------
 select * from proveedores
 ------------------------------------

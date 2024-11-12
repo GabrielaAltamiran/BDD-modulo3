@@ -1,8 +1,8 @@
 package com.krakedev.inventarios.entidades;
 
 public class Proveedor {
-	private String identificacion;
-	private String tipoDodumento;
+	private String indentificacion;
+	private tipoDocumento tipoDocumento;
 	private String nombre;
 	private String telefono;
 	private String correo;
@@ -11,36 +11,32 @@ public class Proveedor {
 	public Proveedor() {
 		
 	}
-	//--------------SOBREESCRIBIR--------
 	@Override
 	public String toString() {
-		return "Proveedor [identificacion=" + identificacion + ", tipoDodumento=" + tipoDodumento + ", nombre=" + nombre
-				+ ", telefono=" + telefono + ", correo=" + correo + ", direccion=" + direccion + "]";
+		return "Proveedor [indentificacion=" + indentificacion + ", tipoDocumento=" + tipoDocumento + ", nombre="
+				+ nombre + ", telefono=" + telefono + ", correo=" + correo + ", direccion=" + direccion + "]";
 	}
-
-	//-----------CONSTRUCTOR CON PARAMETROS---------
-	public Proveedor(String identificacion, String tipoDodumento, String nombre, String telefono, String correo,
-			String direccion) {
+	public Proveedor(String indentificacion, com.krakedev.inventarios.entidades.tipoDocumento tipoDocumento,
+			String nombre, String telefono, String correo, String direccion) {
 		super();
-		this.identificacion = identificacion;
-		this.tipoDodumento = tipoDodumento;
+		this.indentificacion = indentificacion;
+		this.tipoDocumento = tipoDocumento;
 		this.nombre = nombre;
 		this.telefono = telefono;
 		this.correo = correo;
 		this.direccion = direccion;
 	}
-	//--------------GET Y SET------------
-	public String getIdentificacion() {
-		return identificacion;
+	public String getIndentificacion() {
+		return indentificacion;
 	}
-	public void setIdentificacion(String identificacion) {
-		this.identificacion = identificacion;
+	public void setIndentificacion(String indentificacion) {
+		this.indentificacion = indentificacion;
 	}
-	public String getTipoDodumento() {
-		return tipoDodumento;
+	public tipoDocumento getTipoDocumento() {
+		return tipoDocumento;
 	}
-	public void setTipoDodumento(String tipoDodumento) {
-		this.tipoDodumento = tipoDodumento;
+	public void setTipoDocumento(tipoDocumento tipoDocumento) {
+		this.tipoDocumento = tipoDocumento;
 	}
 	public String getNombre() {
 		return nombre;
@@ -66,8 +62,6 @@ public class Proveedor {
 	public void setDireccion(String direccion) {
 		this.direccion = direccion;
 	}
-	
-	
 	
 	
 }

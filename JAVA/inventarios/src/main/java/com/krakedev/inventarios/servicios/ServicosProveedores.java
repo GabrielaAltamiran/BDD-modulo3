@@ -11,8 +11,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.krakedev.inventarios.bdd.ProductosBDD;
 import com.krakedev.inventarios.bdd.ProveedoresBDD;
 import com.krakedev.inventarios.bdd.tipoDocumentobdd;
+import com.krakedev.inventarios.entidades.Producto;
 import com.krakedev.inventarios.entidades.Proveedor;
 import com.krakedev.inventarios.entidades.tipoDocumento;
 import com.krakedev.inventarios.exception.Karakedevexception;
@@ -60,6 +62,22 @@ public class ServicosProveedores {
 			return Response.ok().build();
 		} catch (Karakedevexception e) {
 		
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
+		
+	}
+	@Path("recuperarProducto/{subcadena}")
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response recuperarProducto(@PathParam("subcadena")String Subcadena) {
+		ProductosBDD producto = new ProductosBDD();
+		ArrayList<Producto> prod = null;
+		try {
+			prod =producto.Recuperar(Subcadena);
+			return Response.ok(prod).build();
+			
+		} catch (Karakedevexception e) {
 			e.printStackTrace();
 			return Response.serverError().build();
 		}

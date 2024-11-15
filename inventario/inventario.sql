@@ -153,7 +153,7 @@ values ('1755841002', 'C', 'Gabriela Altamirano', '0984654995', 'nietogabriela35
 
 
 ------------------------------------
-select * from proveedores
+--select * from proveedores
 ------------------------------------
 create table estado_pedidos(
 	codigo char(1) not null,
@@ -170,7 +170,7 @@ values ('S','Solicitado');
 --select * from estado_pedidos
 ------------------------------------
 create table cabecera_pedidos(
-	numero char(1) not null,
+	numero serial not null,
 	proveedor varchar(12) not null,
 	fecha timestamp not null,
 	estado char(1) not null,
@@ -179,35 +179,34 @@ create table cabecera_pedidos(
 	constraint cabecera_pedidos_fk1 foreign key (estado) references estado_pedidos(codigo)	
 );
 ------------------------------------
-insert into cabecera_pedidos (numero,proveedor,fecha,estado)
-values('1','85381254100','2024-07-29 10:41:05','R');
+insert into cabecera_pedidos (proveedor,fecha,estado)
+values('85381254100','2024-07-29 10:41:05','R');
 ------------------------------------
-insert into cabecera_pedidos (numero,proveedor,fecha,estado)
-values('2','85381254100','2024-07-30 11:30:15','S');
+insert into cabecera_pedidos (proveedor,fecha,estado)
+values('85381254100','2024-07-30 11:30:15','S');
 ------------------------------------
 --select * from cabecera_pedidos
 ------------------------------------
 
 create table detalle_pedidos(
 	codigo serial not null,
-	cabecera_pedido char(1),
+	cabecera_pedido serial not null,
 	codigo_pro char(1),
-	cantidad_solicitada int not null,
+	cantidad_solicitada int,
 	subtotal decimal(10,2) not null,
 	cantidad_recibida int not null,
 	constraint detalle_pedidos_pk primary key (codigo),
-	constraint detalle_pedidos_fk1 foreign key (cabecera_pedido) references cabecera_pedidos(numero), 
 	constraint detalle_pedidos_fk2 foreign key (codigo_pro) references producto(codigo_pr)
 );
 ------------------------------------
-insert into detalle_pedidos(cabecera_pedido,codigo_pro,cantidad_solicitada,subtotal,cantidad_recibida)
-values('1','1',100,37.29,100);
+insert into detalle_pedidos(codigo_pro,cantidad_solicitada,subtotal,cantidad_recibida)
+values('1',100,37.29,100);
 ------------------------------------
-insert into detalle_pedidos(cabecera_pedido,codigo_pro,cantidad_solicitada,subtotal,cantidad_recibida)
-values('1','4',50,11.8,50);
+insert into detalle_pedidos(codigo_pro,cantidad_solicitada,subtotal,cantidad_recibida)
+values('4',50,11.8,50);
 ------------------------------------
-insert into detalle_pedidos(cabecera_pedido,codigo_pro,cantidad_solicitada,subtotal,cantidad_recibida)
-values('2','1',10,3.73,10);
+insert into detalle_pedidos(codigo_pro,cantidad_solicitada,subtotal,cantidad_recibida)
+values('1',10,3.73,10);
 ------------------------------------
 --select * from detalle_pedidos
 ------------------------------------

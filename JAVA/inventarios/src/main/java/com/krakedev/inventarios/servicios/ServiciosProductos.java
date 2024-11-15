@@ -12,48 +12,41 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.krakedev.inventarios.bdd.ProductosBDD;
-import com.krakedev.inventarios.bdd.ProveedoresBDD;
-import com.krakedev.inventarios.bdd.tipoDocumentobdd;
 import com.krakedev.inventarios.entidades.Producto;
-import com.krakedev.inventarios.entidades.Proveedor;
-import com.krakedev.inventarios.entidades.tipoDocumento;
 import com.krakedev.inventarios.exception.Karakedevexception;
 
-@Path("Proveedores")
-
-public class ServicosProveedores {
-	
-	@Path("buscar/{subcadena}")
+@Path("Productos")
+public class ServiciosProductos {
+	@Path("recuperarProducto/{subcadena}")
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response buscar(@PathParam("subcadena") String subcadena) {
-		ProveedoresBDD pro = new ProveedoresBDD();
-		ArrayList<Proveedor> provedor1 = null;
+	public Response recuperarProducto(@PathParam("subcadena") String Subcadena) {
+		ProductosBDD producto = new ProductosBDD();
+		ArrayList<Producto> prod = null;
 		try {
-			provedor1 = pro.Buscar(subcadena);
-			return Response.ok(provedor1).build();
-		} catch (Karakedevexception e) {
-			return Response.serverError().build();
-		}
-	}
+			prod = producto.Recuperar(Subcadena);
+			return Response.ok(prod).build();
 
-	
-	@Path("insertarNuevoProveedor")
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	public Response insertarProv(Proveedor pro) {
-		System.out.println("INSERTANDO PROVEEDOR>>>>>>>>>>>>>>>>>>>> "+pro);
-		ProveedoresBDD proveedoresNuevo = new ProveedoresBDD();
-		try {
-			proveedoresNuevo.insertar(pro);
-			return Response.ok().build();
 		} catch (Karakedevexception e) {
-		
 			e.printStackTrace();
 			return Response.serverError().build();
 		}
-		
+
 	}
-	
-	
+
+	@Path("crearProducto")
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+
+	public Response crearProducto(Producto pro) {
+		System.out.println("CREANDO PRODUCTO>>>>>>>>>>>>>>>>>> " + pro);
+		ProductosBDD crearProducto = new ProductosBDD();
+		try {
+			crearProducto.crearProducto(pro);
+			return Response.ok().build();
+		} catch (Karakedevexception e) {
+			e.printStackTrace();
+			return Response.serverError().build();
+		}
+	}
 }

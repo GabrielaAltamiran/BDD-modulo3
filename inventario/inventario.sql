@@ -156,7 +156,7 @@ values ('1755841002', 'C', 'Gabriela Altamirano', '0984654995', 'nietogabriela35
 --select * from proveedores
 ------------------------------------
 create table estado_pedidos(
-	codigo char(1) not null,
+	codigo char(1),
 	descripcion varchar(100),
 	constraint estado_pedidos_pk primary key(codigo)
 );
@@ -173,7 +173,7 @@ create table cabecera_pedidos(
 	numero serial not null,
 	proveedor varchar(12) not null,
 	fecha timestamp not null,
-	estado char(1) not null,
+	estado char(1),
 	constraint cabecera_pedidos_pk primary key (numero),
 	constraint cabecera_pedidos_fk foreign key (proveedor) references proveedores(indentificacion),
 	constraint cabecera_pedidos_fk1 foreign key (estado) references estado_pedidos(codigo)	
@@ -193,10 +193,10 @@ create table detalle_pedidos(
 	cabecera_pedido serial not null,
 	codigo_pro char(1),
 	cantidad_solicitada int,
-	subtotal decimal(10,2) not null,
+	subtotal decimal(10,2) ,
 	cantidad_recibida int not null,
 	constraint detalle_pedidos_pk primary key (codigo),
-	constraint detalle_pedidos_fk2 foreign key (codigo_pro) references producto(codigo_pr)
+	constraint detalle_pedidos_fk2 foreign  key (codigo_pro) references producto(codigo_pr)
 );
 ------------------------------------
 insert into detalle_pedidos(codigo_pro,cantidad_solicitada,subtotal,cantidad_recibida)

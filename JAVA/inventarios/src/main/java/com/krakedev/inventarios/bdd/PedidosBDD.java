@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -83,47 +84,59 @@ public class PedidosBDD {
 	// ------------------------------ACTUALIZAR CABECERA DE
 	// PEDIDO----------------------------
 	public void actualizarPedido(Pedido pedido) throws Karakedevexception {
-	    Connection con = null;
-	    PreparedStatement psCabecera = null;
-	    PreparedStatement psDetalle = null;
-	    try {
-	        con = conexionbdd.obtenerConexion();
+		Connection con = null;
+		PreparedStatement psCabecera = null;
+		PreparedStatement psDetalle = null;
+		PreparedStatement psHistorial = null;
+		Date fechaActual = new Date();
+		Timestamp fechaHoraActual = new Timestamp(fechaActual.getTime());
 
-	        psCabecera = con.prepareStatement("update cabecera_pedidos set estado='R' where numero=? ",Statement.RETURN_GENERATED_KEYS);
-	        psCabecera.setInt(1, pedido.getCodigo());
-	        psCabecera.executeUpdate();
+		try {
+			con = conexionbdd.obtenerConexion();
+			psCabecera = con.prepareStatement("update cabecera_pedidos set estado='R' where numero=? ",
+					Statement.RETURN_GENERATED_KEYS);
+			psCabecera.setInt(1, pedido.getCodigo());
+			psCabecera.executeUpdate();
 
-	        ArrayList<DetallePedido> detallesPedidos = pedido.getDetalles();
-	        
-	        for (int i = 0; i < detallesPedidos.size(); i++) {
-	            DetallePedido detalle = detallesPedidos.get(i);
+			ArrayList<DetallePedido> detallesPedidos = pedido.getDetalles();
 
-	            psDetalle = con.prepareStatement("UPDATE detalle_pedidos SET subtotal = ?, cantidad_recibida = ? WHERE codigo = ?",Statement.RETURN_GENERATED_KEYS);
-	            BigDecimal precioV = detalle.getProductos().getPrecioVenta();
-	            BigDecimal subtotal = precioV.multiply(new BigDecimal(detalle.getCantidadRecibida()));
-	            psDetalle.setBigDecimal(1, subtotal);
-	            psDetalle.setInt(2, detalle.getCantidadRecibida());
-	            psDetalle.setInt(3, Integer.parseInt(detalle.getProductos().getCodigoProducto()));
+			for (int i = 0; i < detallesPedidos.size(); i++) {
+				DetallePedido detalle = detallesPedidos.get(i);
+				psDetalle = con.prepareStatement(
+						"UPDATE detalle_pedidos SET subtotal = ?, cantidad_recibida = ? WHERE codigo = ?",
+						Statement.RETURN_GENERATED_KEYS);
+				BigDecimal precioV = detalle.getProductos().getPrecioVenta();
+				BigDecimal subtotal = precioV.multiply(new BigDecimal(detalle.getCantidadRecibida()));
+				psDetalle.setBigDecimal(1, subtotal);
+				psDetalle.setInt(2, detalle.getCantidadRecibida());
+				psDetalle.setInt(3, Integer.parseInt(detalle.getProductos().getCodigoProducto()));
+				psDetalle.executeUpdate();
+				
+				psHistorial = con.prepareStatement(
+						"INSERT INTO public.historial_stock(fecha, referencia, codigo_pro, cantidad) VALUES (?, ?, ?, ?)");
+				psHistorial.setTimestamp(1, fechaHoraActual);
+				psHistorial.setString(2, "PEDIDO " + pedido.getCodigo());
+				psHistorial.setString(3, detalle.getProductos().getCodigoProducto());
+				psHistorial.setInt(4, detalle.getCantidadRecibida());
+				psHistorial.executeUpdate();
 
-	            psDetalle.executeUpdate();
-	        }
+			}
 
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	        throw new Karakedevexception("Error al actualizar pedido. Detalle: " + e.getMessage());
-	    } finally {
-	        try {
-	            if (psCabecera != null) 
-	            	psCabecera.close();
-	            if (psDetalle != null)
-	            	psDetalle.close();
-	            if (con != null) 
-	            	con.close();
-	        } catch (SQLException e) {
-	            e.printStackTrace();
-	        }
-	    }
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new Karakedevexception("Error al actualizar pedido. Detalle: " + e.getMessage());
+		} finally {
+			try {
+				if (psCabecera != null)
+					psCabecera.close();
+				if (psDetalle != null)
+					psDetalle.close();
+				if (con != null)
+					con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-
 
 }

@@ -32,9 +32,9 @@ public class ServicosPedidos {
 	
 	public Response recibir(Pedido pedido) {
 		System.out.println("Actualizando Pedido>>>>>>>>>>>>>>> "+pedido);
-		PedidosBDD cabeceraPedAct = new PedidosBDD();
+		PedidosBDD actualizar = new PedidosBDD();
 		try {
-			cabeceraPedAct.actualizarPedido(pedido);
+			actualizar.actualizarPedido(pedido);
 			return Response.ok().build();
 		
 		} catch (Karakedevexception e) {

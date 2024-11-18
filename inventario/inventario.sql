@@ -245,28 +245,29 @@ values('1','4',5,0.36,0.36,0.40);
 --select * from detalle_ventas
 ------------------------------------
 create table historial_stock (
-	codigo serial not null,
+	codigo serial,
 	fecha timestamp not null,
+	referencia varchar(100),
 	codigo_pro char(1) not null,
 	cantidad int not null,
 	constraint historial_stock_pk primary key (codigo),
 	constraint historial_stock_fk1 foreign key(codigo_pro) references producto(codigo_pr)
 );
 ------------------------------------
-insert into historial_stock(fecha,codigo_pro,cantidad)
-values('2024-11-7 13:09:14','1',100);
+insert into historial_stock(fecha,referencia,codigo_pro,cantidad)
+values('2024-11-7 13:09:14','Pedido 1','1',100);
 ------------------------------------
-insert into historial_stock(fecha,codigo_pro,cantidad)
-values('2024-11-7 13:09:14','4',50);
+insert into historial_stock(fecha,referencia,codigo_pro,cantidad)
+values('2024-11-7 13:09:14','Pedido 1','4',50);
 ------------------------------------
-insert into historial_stock(fecha,codigo_pro,cantidad)
-values('2024-11-09 20:39:09','1',10);
+insert into historial_stock(fecha,referencia,codigo_pro,cantidad)
+values('2024-11-09 20:39:09','Pedido 2','1',10);
 ------------------------------------
-insert into historial_stock(fecha,codigo_pro,cantidad)
-values('2024-11-09 21:19:54','1',-5);
+insert into historial_stock(fecha,referencia,codigo_pro,cantidad)
+values('2024-11-09 21:19:54','Venta 1','1',-5);
 ------------------------------------
-insert into historial_stock(fecha,codigo_pro,cantidad)
-values('2024-11-09 21:39:09','4',-1)
+insert into historial_stock(fecha,referencia,codigo_pro,cantidad)
+values('2024-11-09 21:39:09','Venta 1','4',-1)
 ------------------------------------
 --select * from historial_stock
 ------------------------------------

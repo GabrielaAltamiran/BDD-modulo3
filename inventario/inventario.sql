@@ -211,22 +211,22 @@ values('1',10,3.73,10);
 --select * from detalle_pedidos
 ------------------------------------
 create table cabecera_ventas(
-	codigo char(1) not null,
-	fecha timestamp not null,
-	total_sin_iva money not null,
+	codigo serial ,
+	fecha timestamp ,
+	total_sin_iva money ,
 	iva decimal(10,2) not null,
 	total money not null,
 	constraint cabecera_ventas_pk primary key(codigo)
 );
 ------------------------------------
-insert into cabecera_ventas(codigo,fecha,total_sin_iva,iva,total)
-values('1','2024-10-23 20:30:19',3.26,0.39,3.65);
+insert into cabecera_ventas(fecha,total_sin_iva,iva,total)
+values('2024-10-23 20:30:19',3.26,0.39,3.65);
 ------------------------------------
 --select * from cabecera_ventas
 ------------------------------------
 create table detalle_ventas(
-	codigo serial not null,
-	codigo_CV char(1) not null,
+	codigo serial ,
+	codigo_CV serial ,
 	codigo_pro char(1) not null,
 	cantidad int not null,
 	precio_venta money not null,
@@ -248,8 +248,8 @@ create table historial_stock (
 	codigo serial,
 	fecha timestamp not null,
 	referencia varchar(100),
-	codigo_pro char(1) not null,
-	cantidad int not null,
+	codigo_pro char(1) ,
+	cantidad int ,
 	constraint historial_stock_pk primary key (codigo),
 	constraint historial_stock_fk1 foreign key(codigo_pro) references producto(codigo_pr)
 );

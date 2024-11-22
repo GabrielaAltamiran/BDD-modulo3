@@ -26,11 +26,11 @@ public class ServicosPedidos {
 			return Response.serverError().build();
 		}
 	}
-	@Path("recibir")
+	@Path("recibirPe")
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	
-	public Response recibir(Pedido pedido) {
+	public Response recibirPe(Pedido pedido) {
 		System.out.println("Actualizando Pedido>>>>>>>>>>>>>>> "+pedido);
 		PedidosBDD actualizar = new PedidosBDD();
 		try {

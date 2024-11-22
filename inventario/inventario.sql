@@ -13,8 +13,8 @@ drop table if exists detalle_ventas;
 drop table if exists historial_stock;
 --------------CREAR TABLAS----------------------
 create table categorias(
-	codigo_cat serial not null,
-	nombre varchar(100) not null,
+	codigo_cat serial,
+	nombre varchar(100) ,
 	categoria_padre int,
 	constraint categorias_pk primary key (codigo_cat),
 	constraint contegorias_fk foreign key (categoria_padre) references categorias (codigo_cat)
@@ -44,8 +44,8 @@ values('Sin alcohol',5);
 --select * from categorias
 -------------------------------------
 create table categorias_unidadMedidas(
-	codigoUDM char(1) not null,
-	nombre varchar(100) not null,
+	codigoUDM char(1),
+	nombre varchar(100) ,
 	constraint categorias_unidadMedidas_pk primary key (codigoUDM)	
 );
 -------------------------------------
@@ -92,13 +92,13 @@ values('lb','Libras','P');
 --select * from unidades_de_medidas
 ------------------------------------
 create table producto (
-	codigo_pr char(1) not null,
-	nombre_pr varchar(100) not null,
-	udm char(2) not null,
-	precio_venta money not null,
-	iva boolean not null,
-	coste money not null,
-	codigo_categoria serial not null,
+	codigo_pr char(1) ,
+	nombre_pr varchar(100) ,
+	udm char(2) ,
+	precio_venta money ,
+	iva boolean ,
+	coste money ,
+	codigo_categoria serial ,
 	stock int not null,
 	constraint producto_pk primary key (codigo_pr),
 	constraint producto_fk foreign key (codigo_categoria) references categorias(codigo_cat)

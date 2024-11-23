@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="ejercicio.js"></script>
+        <link rel="stylesheet" href="estilo.css">
+    </head>
+    <body>
+        <input type="text" id="txtValor"/>
+        <input type="button" value="TEST1" onclick="ejecutarCadena((texto)=>{
+            console.log('Hola '+texto);
+        });"/>
+        <input type="button" value="TEST2" onclick="ejecutarCadena((mayusculas)=>{
+            let palabra = 'Realizado con exito  ' +mayusculas ;
+            console.log(palabra);
+            console.log(palabra.toUpperCase())
+        });"/>
+        <input type="button" value="TEST3" onclick="ejecutarCadena((numeroCaracter)=>{
+            let tamaño ;
+            let letra = numeroCaracter.length
+            alert('LA PALABRA QUE INGRESAS TIENE ' +letra+ ' LETRAS');
+
+        });"/>        
+    </body>
+</html>

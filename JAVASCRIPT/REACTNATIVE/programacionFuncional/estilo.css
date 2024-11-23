@@ -1,0 +1,29 @@
+body{
+    color:black;
+    background-image: url(imagen2.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+h4{
+    font-size: 45px;
+    color: white;
+    text-shadow: 4px 4px black;
+    -webkit-text-stroke-color: white;
+    -webkit-text-stroke-width: 1px;
+    color: transparent;
+    text-align: left;
+    font-family: 'Times New Roman', Times, serif;
+
+}
+input{
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer; /*SE PONE LA MANO CUANDO SE VA AL INPUT CAJA DE TEXTO O BOTON*/
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+
+}

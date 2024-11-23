@@ -1,0 +1,19 @@
+body{
+    color:black;
+    background-image: url(imagenEj.jpg);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+input{
+    background-color: black;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer; /*SE PONE LA MANO CUANDO SE VA AL INPUT CAJA DE TEXTO O BOTON*/
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+
+}

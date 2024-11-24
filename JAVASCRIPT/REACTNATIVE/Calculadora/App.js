@@ -56,20 +56,6 @@ export default function App() {
           setMultiplicaccion(multiplica)
         }}      
       />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
       <StatusBar style="auto" />
     </View>
   );

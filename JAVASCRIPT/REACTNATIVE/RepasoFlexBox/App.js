@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
   },
   container8: {
     flex: 1,
-    backgroundColor: "withe",
+    backgroundColor: "grey",
     flexDirection:"column",
     justifyContent:'center',
     alignItems:"flex-start",

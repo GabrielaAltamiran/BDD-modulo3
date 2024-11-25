@@ -1,15 +1,11 @@
 import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
-import { StyleSheet, Text, TextInput,Button, View } from "react-native";
+import { StyleSheet, Text, TextInput, Button, View } from "react-native";
 
 export default function App() {
   const [dolares, setDolares] = useState("INGRESE MONTO ");
-  const [pesosMexicanos, setPesosMexicano] = useState(
-    " "
-  );
-  const [pesosColombianos, setPesosColombianos] = useState(
-    " "
-  );
+  const [pesosMexicanos, setPesosMexicano] = useState(" ");
+  const [pesosColombianos, setPesosColombianos] = useState(" ");
   const [euros, setEuros] = useState(" ");
 
   const monedaMexicana = 18;
@@ -36,27 +32,27 @@ export default function App() {
       <Text>EUROS {euros}</Text>
       <Text> </Text>
       <Button
-      title="TRANSFORMAR A PESOS MEXICANOS"
-      onPress={()=>{
-        const pesosMexicanos1 = parseFloat(dolares) * monedaMexicana;
-        setPesosMexicano(pesosMexicanos1.toFixed(2));
-      }}
+        title="TRANSFORMAR A PESOS MEXICANOS"
+        onPress={() => {
+          const pesosMexicanos1 = parseFloat(dolares) * monedaMexicana;
+          setPesosMexicano(pesosMexicanos1.toFixed(2));
+        }}
       />
       <Text> </Text>
-      <Button 
-      title="TRANSFORMAR A PESOS COLOMBIANOS"
-      onPress={()=>{
-        const pesosColombianos1 = parseFloat(dolares) * monedaColombiana;
-        setPesosColombianos(pesosColombianos1.toFixed(2))
-      }}
+      <Button
+        title="TRANSFORMAR A PESOS COLOMBIANOS"
+        onPress={() => {
+          const pesosColombianos1 = parseFloat(dolares) * monedaColombiana;
+          setPesosColombianos(pesosColombianos1.toFixed(2));
+        }}
       />
       <Text> </Text>
-      <Button  
-      title="TRANSFORMAR A EUROS"
-      onPress={()=>{
-        const euros1 = parseFloat(dolares) * monedadEuros;
-        setEuros(euros1.toFixed(2))
-      }}
+      <Button
+        title="TRANSFORMAR A EUROS"
+        onPress={() => {
+          const euros1 = parseFloat(dolares) * monedadEuros;
+          setEuros(euros1.toFixed(2));
+        }}
       />
       <StatusBar style="auto" />
     </View>

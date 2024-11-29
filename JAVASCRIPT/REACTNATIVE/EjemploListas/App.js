@@ -26,37 +26,37 @@ export default function App() {
   const [txtApellido, setTxtApellido] = useState();
   const [numElemento, setNumElemento] = useState(personas.length);
   //-------------------------------------------------------
-  let ItemPersona = (props) => {
+  let ItemPersona = ({indice,persona}) => {   //({indice, persona}) destucturing
     // componente para  renderizar cada item
     return (
       //RETORNAR UN VIEW NOS AYUDA PAR RETONAR VARIOS ELEMENTOS
       <View style={styles.intemPersonas}>
         <View style={styles.itemIndeces}>
-          <Text> {props.indice}</Text>
+          <Text> {indice}</Text>
         </View>
         <View style={styles.itemContenido}>
           <Text style={styles.textoPrincipal}>
-            {props.persona.nombre} {props.persona.apellido}{" "}
+            {persona.nombre} {persona.apellido}{" "}
           </Text>
-          <Text style={styles.textoSecunadario}>{props.persona.cedula}</Text>
+          <Text style={styles.textoSecunadario}>{persona.cedula}</Text>
         </View>
         <View style={styles.itemBotones}>
           <Button
             title=" ✎ " //EDITAR
             color="goldenrod" //AQUI SE LE AGREGA EL COLOR PARA EL BOTON Y ENSETE CASO SE ESCRIBE EL NOMBRE NO EL CODIGO DEL COLOR
             onPress={() => {
-              setTxtNombre(props.persona.nombre);
-              setTxtApellido(props.persona.apellido);
-              setTxtCedula(props.persona.cedula);
+              setTxtNombre(persona.nombre);
+              setTxtApellido(persona.apellido);
+              setTxtCedula(persona.cedula);
               esNuevo = false;
-              indiceSeleccionado = props.indice;
+              indiceSeleccionado = indice;
             }}
           />
           <Button
             title=" ✘ " //ELIMINAR
             color="burlywood"
             onPress={() => {
-              indiceSeleccionado = props.indice;
+              indiceSeleccionado = indice;
               personas.splice(indiceSeleccionado, 1); //SE BORRAR O ELIMINA EL ELEMENTO
               console.log("Arreglo personas", personas);
               setNumElemento(personas.length);
@@ -86,11 +86,18 @@ export default function App() {
   // FUNSION GUARDAR PERSONA
   let guardarPersona = () => {
     // Verificamos si los campos están vacíos o son null
-    if (txtNombre == null || txtApellido == null || txtCedula == null || txtNombre.trim() === "" || txtApellido.trim() === "" || txtCedula.trim() === "") {
+    if (
+      txtNombre == null ||
+      txtApellido == null ||
+      txtCedula == null ||
+      txtNombre.trim() === "" ||
+      txtApellido.trim() === "" ||
+      txtCedula.trim() === ""
+    ) {
       Alert.alert("ERROR", "Debe ingresar todos los campos");
     } else {
       // Si los campos están completos, continuamos con las siguientes validaciones
-  
+
       // Verificamos que la cédula tenga exactamente 10 caracteres
       if (txtCedula.length !== 10) {
         Alert.alert("ERROR", "La cédula debe tener exactamente 10 caracteres");
@@ -108,7 +115,7 @@ export default function App() {
             apellido: txtApellido,
             cedula: txtCedula,
           };
-  
+
           // Si es un nuevo registro, agregamos la persona al arreglo
           if (esNuevo) {
             personas.push(persona);
@@ -118,17 +125,17 @@ export default function App() {
             personas[indiceSeleccionado].apellido = txtApellido;
             personas[indiceSeleccionado].cedula = txtCedula;
           }
-  
+
           // Limpiamos los campos
           limpiar();
-  
+
           // Actualizamos la cantidad de elementos en el arreglo
           setNumElemento(personas.length);
         }
       }
     }
   };
-  
+
   return (
     <View style={styles.container}>
       <View style={styles.areaCabecera}>
@@ -176,14 +183,12 @@ export default function App() {
         <FlatList
           style={styles.lista}
           data={personas}
-          renderItem={(elemento) => {
+          renderItem={({index,item}) => { //concepto destructuring
             return (
-              <ItemPersona indice={elemento.index} persona={elemento.item} />
+              <ItemPersona indice={index} persona={item} />
             );
-          }}
-          keyExtractor={(item) => {
-            return item.cedula;
-          }}
+          }}// fin concepto destructuring
+          keyExtractor={(item) => item.cedula}
         />
       </View>
       <View style={styles.areaPiePagiana}>

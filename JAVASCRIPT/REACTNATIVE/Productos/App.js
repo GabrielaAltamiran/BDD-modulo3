@@ -9,8 +9,9 @@ import {
   Button,
   Alert,
   ScrollView,
-  TouchableWithoutFeedback,
-  Keyboard
+  TouchableOpacity,
+  TouchableHighlight,
+  Modal,
 } from "react-native";
 
 // INICIO ARREGLO DE DATOS (PRODUCTOS)
@@ -53,6 +54,7 @@ const productos = [
 ];
 // FIN ARREGLO DE DATOS (PRODUCTOS)
 
+// Inicialización de variables globales
 let nuevoProducto = true;
 let indiceSeleccionado = -1;
 
@@ -64,51 +66,75 @@ export default function App() {
   const [txtPrecioCompra, setTxtPrecioCompra] = useState();
   const [txtPrecioVenta, setTxtPrecioVenta] = useState();
   const [numElemento, setNumElemento] = useState(productos.length);
-  //---------------------------------------------------
+
+  // Estado para mostrar el modal de confirmación de eliminación
+  const [modalVisible, setModalVisible] = useState(false);
+  const [productoAEliminar, setProductoAEliminar] = useState(null);
 
   //-----------------------ItemProducto----------------
-  let ItemProducto = (props) => {
+  let ItemProducto = ({ producto, index }) => {
     return (
       <View style={styles.ItemProducto}>
         <View style={styles.itemIndeces}>
-          <Text>{props.productos.id}</Text>
+          <Text>{producto.id}</Text>
         </View>
 
         <View style={styles.itemContenido}>
           <View style={styles.itemTextoContainer}>
-            <Text style={styles.textoPrincipal}>
-              {props.productos.nombreProducto}
-            </Text>
-            <Text style={styles.cat}>{props.productos.categoriaProducto}</Text>
+            <Text style={styles.textoPrincipal}>{producto.nombreProducto}</Text>
+            <Text style={styles.cat}>{producto.categoriaProducto}</Text>
           </View>
-          <Text style={styles.itemPrecioVenta}>
-            {props.productos.precioVenta}
-          </Text>
+          <Text style={styles.itemPrecioVenta}>{producto.precioVenta}</Text>
         </View>
 
         <View style={styles.itemBotones}>
-          <Button
-            title=" ✎ "
-            color="goldenrod"
-            onPress={() => {
-              setTxtCodigo(props.productos.id);
-              setTxtNombreProducto(props.productos.nombreProducto);
-              setTxtCategoria(props.productos.categoriaProducto);
-              setTxtPrecioCompra(props.productos.precioCompra);
-              setTxtPrecioVenta(props.productos.precioVenta);
-              nuevoProducto = false;
-              indiceSeleccionado = props.indice;
-            }}
-          />
-          <Button
-            title=" ✘ "
-            color="burlywood"
-            onPress={() => {
-              indiceSeleccionado = props.indice;
-              productos.splice(indiceSeleccionado, 1);
-              setNumElemento(productos.length);
-            }}
-          />
+          {/* Botón para editar el producto */}
+          <View style={styles.itemBotones}>
+            {/* Botón para editar el producto */}
+            <TouchableHighlight
+              activeOpacity={0.6}
+              underlayColor="#DDDDDD"
+              onPress={() => {
+                setTxtCodigo(producto.id);
+                setTxtNombreProducto(producto.nombreProducto);
+                setTxtCategoria(producto.categoriaProducto);
+                setTxtPrecioCompra(producto.precioCompra);
+                setTxtPrecioVenta(producto.precioVenta);
+                nuevoProducto = false;
+                indiceSeleccionado = producto.id;
+              }}
+            >
+              <View
+                style={{
+                  styles,
+                  flexDirection: "row",
+                  padding: 1,
+                  flex: 3,
+                  justifyContent: "space-evenly",
+                  alignItems: "center",
+                  marginHorizontal: 12,
+                  backgroundColor: "goldenrod",
+                  padding: 8,
+                  margin: 20,
+                  borderRadius: 4,
+                  paddingHorizontal: 10,
+                }}
+              >
+                <Text>✎</Text>
+              </View>
+            </TouchableHighlight>
+
+            {/* Botón para eliminar el producto con "X" */}
+            <Button
+              title=" ✘ "
+              color="burlywood"
+              onPress={() => {
+                // Establecemos el producto a eliminar y mostramos el modal
+                setProductoAEliminar({ producto, index });
+                setModalVisible(true);
+              }}
+            />
+          </View>
         </View>
       </View>
     );
@@ -157,111 +183,140 @@ export default function App() {
           id: txtCodigo,
         };
         if (nuevoProducto) {
-          productos.push(producto);
+          productos.push(producto); // Se agrega un nuevo producto al arreglo
         } else {
-          productos[indiceSeleccionado] = producto;
+          productos[indiceSeleccionado] = producto; // Se actualiza el producto existente
         }
-        limpiarCampos();
-        setNumElemento(productos.length);
+        limpiarCampos(); // Limpiar los campos después de guardar
+        setNumElemento(productos.length); // Actualiza el contador de productos
       }
     }
   };
 
   const precioVenta = (precioCompra) => {
     const precioVentaCalculado = parseFloat(precioCompra) * 1.2;
-    setTxtPrecioVenta(precioVentaCalculado.toFixed(2));
+    setTxtPrecioVenta(precioVentaCalculado.toFixed(2)); // Calcula el precio de venta
+  };
+
+  // Función para eliminar un producto
+  const eliminarProducto = () => {
+    // Utilizamos el índice directamente para eliminar el producto
+    productos.splice(productoAEliminar.index, 1); // Elimina el producto usando el índice
+    setNumElemento(productos.length); // Actualizamos el contador de productos
+    setModalVisible(false); // Cerramos el modal de confirmación
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <View style={styles.container}>
-        <ScrollView>
-          <View style={styles.areaCabecera}>
-            <Text style={styles.titulo}>PRODUCTOS</Text>
-            <TextInput
-              style={styles.txt}
-              value={txtCodigo}
-              placeholder="CODIGO"
-              onChangeText={setTxtCodigo}
-              keyboardType="numeric"
-              editable={nuevoProducto} // Deshabilitado si estamos editando
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.areaCabecera}>
+          <Text style={styles.titulo}>PRODUCTOS</Text>
+          <TextInput
+            style={styles.txt}
+            value={txtCodigo}
+            placeholder="CODIGO"
+            onChangeText={setTxtCodigo}
+            keyboardType="numeric"
+            editable={nuevoProducto}
+          />
+          <TextInput
+            style={styles.txt}
+            value={txtNombreProducto}
+            placeholder="NOMBRE"
+            onChangeText={setTxtNombreProducto}
+            keyboardType="default"
+          />
+          <TextInput
+            style={styles.txt}
+            value={txtCategoria}
+            placeholder="Categoría"
+            onChangeText={setTxtCategoria}
+            keyboardType="default"
+          />
+          <TextInput
+            style={styles.txt}
+            value={txtPrecioCompra}
+            placeholder="PRECIO COMPRA"
+            onChangeText={(value) => {
+              setTxtPrecioCompra(value);
+              precioVenta(value); // Calcula el precio de venta cuando se ingresa el precio de compra
+            }}
+            keyboardType="decimal-pad"
+          />
+          <TextInput
+            style={styles.txt}
+            value={txtPrecioVenta}
+            placeholder="PRECIO VENTA"
+            onChangeText={setTxtPrecioVenta}
+            keyboardType="decimal-pad"
+            editable={false} // El precio de venta no puede ser editado directamente
+          />
+          <View style={styles.areaBotones}>
+            <Button
+              title="NUEVO"
+              color="darkgoldenrod"
+              onPress={limpiarCampos} // Limpia los campos para ingresar un nuevo producto
             />
-            <TextInput
-              style={styles.txt}
-              value={txtNombreProducto}
-              placeholder="NOMBRE"
-              onChangeText={setTxtNombreProducto}
-              keyboardType="default"
+            <Button
+              title="GUARDAR"
+              color="darkgoldenrod"
+              onPress={guardarProducto} // Guarda o actualiza el producto
             />
-            <TextInput
-              style={styles.txt}
-              value={txtCategoria}
-              placeholder="Categoría"
-              onChangeText={setTxtCategoria}
-              keyboardType="default"
-            />
+            <Text style={styles.numElemento}>PRODUCTOS: {numElemento}</Text>
+          </View>
+        </View>
+      </ScrollView>
 
-            <TextInput
-              style={styles.txt}
-              value={txtPrecioCompra}
-              placeholder="PRECIO COMPRA"
-              onChangeText={(value) => {
-                setTxtPrecioCompra(value);
-                precioVenta(value);
+      <View style={styles.areaContenido}>
+        <FlatList
+          style={styles.listaProducto}
+          data={productos}
+          renderItem={(elemento) => {
+            return (
+              <ItemProducto indice={elemento.index} producto={elemento.item} />
+            );
+          }}
+          keyExtractor={(item) => item.id}
+        />
+      </View>
+
+      <View style={styles.areaPiePagiana}>
+        <Text>Autor: Gabriela Altamirano</Text>
+      </View>
+
+      {/* Modal de confirmación para eliminar */}
+      <Modal
+        transparent={true}
+        animationType="fade"
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text
+              style={{
+                styles,
+                fontWeight: "bold",
+                fontSize: 18,
+                paddingLeft: 9,
+                margin: 9
+
               }}
-              keyboardType="decimal-pad"
-            />
-            <TextInput
-              style={styles.txt}
-              value={txtPrecioVenta}
-              placeholder="PRECIO VENTA"
-              onChangeText={setTxtPrecioVenta}
-              keyboardType="decimal-pad"
-              editable={false} // No editable para el precio de venta
-            />
-            <View style={styles.areaBotones}>
-              <Button
-                title="NUEVO"
-                color="darkgoldenrod"
-                onPress={() => {
-                  limpiarCampos();
-                }}
-              />
-              <Button
-                title="GUARDAR"
-                color="darkgoldenrod"
-                onPress={guardarProducto}
-              />
-              <Text style={styles.numElemento}>PRODUCTOS: {numElemento}</Text>
+            >
+              INFO
+            </Text>
+            <Text>¿Está seguro que quiere eliminar?</Text>
+            <View style={styles.modalButtons}>
+              <Button title="Cancelar" onPress={() => setModalVisible(false)} />
+              <Button title="Aceptar" onPress={eliminarProducto} />
             </View>
           </View>
-        </ScrollView>
-
-        <View style={styles.areaContenido}>
-          <FlatList
-            style={styles.listaProducto}
-            data={productos}
-            renderItem={(elemento) => {
-              return (
-                <ItemProducto
-                  indice={elemento.index}
-                  productos={elemento.item}
-                />
-              );
-            }}
-            keyExtractor={(item) => item.id}
-          />
         </View>
-
-        <View style={styles.areaPiePagiana}>
-          <Text>Autor: Gabriela Altamirano</Text>
-        </View>
-      </View>
-    </TouchableWithoutFeedback>
+      </Modal>
+    </View>
   );
 }
 
-//----------------------------------ESTILOS----------
 const styles = StyleSheet.create({
   container: {
     flex: 2,
@@ -271,6 +326,25 @@ const styles = StyleSheet.create({
     alignItems: "stretch", // Asegura que los elementos se extiendan a lo largo del contenedor
     paddingTop: 50,
     paddingHorizontal: 10,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 20,
   },
 
   titulo: {
@@ -292,7 +366,7 @@ const styles = StyleSheet.create({
     padding: 7,
     backgroundColor: "#ffe4c4", // Fondo para los campos de entrada
     borderRadius: 5,
-    alignItems:"stretch"
+    alignItems: "stretch",
   },
 
   listaProducto: {
@@ -313,7 +387,7 @@ const styles = StyleSheet.create({
   codigo: {
     flex: 2,
     fontSize: 16,
-    backgroundColor: "#ffebcd", // Fondo para el índice
+    backgroundColor: "red", // Fondo para el índice
   },
 
   textoPrincipal: {
@@ -412,5 +486,44 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     padding: 1,
+  },
+
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    backgroundColor: "#fff",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    width: "100%",
+    marginTop: 20,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: "white",
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  modalButtons: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: 15,
+    width: "100%",
   },
 });

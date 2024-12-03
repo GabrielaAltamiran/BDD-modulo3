@@ -13,7 +13,10 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="HomeNav" component={Home} />
+        <Stack.Screen name="HomeNav" component={Home} options={{
+          headerShown: false,  //Elimina la barra de encabezado (incluida la flecha "atrás")
+        
+        }} />
         <Stack.Screen name="ProductsNav" component={Products} />
         <Stack.Screen name="ContactsNav" component={Contacts} />
       </Stack.Navigator>

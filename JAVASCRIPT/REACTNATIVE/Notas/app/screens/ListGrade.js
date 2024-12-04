@@ -13,7 +13,7 @@ export const ListGrade = ({ navigation }) => {
     //Componente
     return (
       <TouchableHighlight onPress={()=>{
-        navigation.navigate("GradeFormNav",{notita:nota}); //NAVEGA A LA PANTALLA PRINCIPAL 
+        navigation.navigate("GradeFormNav",{notita:nota}); //NAVEGA A LA PANTALLA PRINCIPAL , aqui ",{notita:nota}" va a pasar informacion
 
       }}>
         <ListItem bottomDivider>
@@ -52,7 +52,7 @@ export const ListGrade = ({ navigation }) => {
         title="+"
         placement="right" //Posición del botón
         onPress={() => {
-          navigation.navigate("GradeFormNav");
+          navigation.navigate("GradeFormNav",{notita:null}); //AQUI SE EVITA LA INFORMACCION QUIERE DECIR QUE NO PASA NADA 
         }}
       />
     </View>

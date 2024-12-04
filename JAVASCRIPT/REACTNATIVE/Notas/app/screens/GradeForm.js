@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, Button } from "@rneui/base";
-import { saveGrade } from "../services/GradeServices"; //Asi se realiza cuando el archivo esta en otra carpeta
-import { FAB } from "@rneui/base";
+import { saveGrade, updateGrade } from "../services/GradeServices"; //Asi se realiza cuando el archivo esta en otra carpeta
 
 export const GradeForm = ({ navigation, route }) => {
   //Validacion para saber si es nuevo o es para editar
@@ -11,18 +10,20 @@ export const GradeForm = ({ navigation, route }) => {
   let gradeR;
 
   if (route.params.notita != null) {
-    isNew = false;//Si no es nuevo
+    isNew = false; //Si no es nuevo
   }
-  if (!isNew ) {
-    subjectR=route.params.notita.subject;
-    gradeR=route.params.notita.grade;
+  if (!isNew) {
+    subjectR = route.params.notita.subject;
+    gradeR = route.params.notita.grade;
   }
   //---------------------------------------
-  const [subject, setSubject] = useState(subjectR);
-  const [grade, setGrade] = useState(gradeR);
+  const [subject, setSubject] = useState(
+    subjectR == null ? null : subjectR + ""
+  );
+  const [grade, setGrade] = useState(gradeR == null ? null : gradeR + ""); //Si es null no se muestra nada
   const [errorSubject, setErrorSubjacte] = useState();
   const [errorGrade, setErrorGrade] = useState();
-  const hasError = false;
+  const [hasError, setHasError] = useState(false);
 
   //FUNCION PARA GAURDAR
   const save = () => {
@@ -30,26 +31,25 @@ export const GradeForm = ({ navigation, route }) => {
     setErrorSubjacte(null);
     validate();
     if (!hasError) {
-      //Si no hay errores, guardar
-      saveGrade({ subject: subject, grade: grade });
-      navigation.goBack("ListGradeNav"); //VOLVER A LA PANTALLA ANTERIOR
+      if (isNew) {
+        saveGrade({ subject: subject, grade: grade });
+      } else {
+        updateGrade({ subject: subject, grade: grade });
+      }
+      navigation.goBack(); //VOLVER A LA PANTALLA ANTERIOR
     }
   };
   //FUNSION PARA VALIDAR
   const validate = () => {
-    if (subject == null || subject == "") {
-      setErrorSubjacte("Debe ingresar una materia");
-      hasError = true;
+    setHasError(false); // Al inicio de la validación, aseguramos que no haya error
+    if (subject == null || subject === "") {
+      setErrorSubject("Debe ingresar una materia");
+      setHasError(true); // Actualizamos el estado de error
     }
     let gradeFloat = parseFloat(grade);
-    if (
-      gradeFloat == null ||
-      isNaN(gradeFloat) ||
-      gradeFloat < 0 ||
-      gradeFloat > 10
-    ) {
+    if (gradeFloat == null || isNaN(gradeFloat) || gradeFloat < 0 || gradeFloat > 10) {
       setErrorGrade("Debe ingresar una nota entre 0 y 10");
-      hasError = true;
+      setHasError(true); // Actualizamos el estado de error
     }
   };
   return (
@@ -61,6 +61,7 @@ export const GradeForm = ({ navigation, route }) => {
         label="Materia"
         errorMessage={errorSubject}
         // errorMessage="Error Fijo" /*se puede cambiar el mensaje, tambien sirve para validar y mostar un mensaje de error*/
+        disabled={!isNew} // Si no es nuevo esta desabilitado
       />
       <Input
         value={grade}

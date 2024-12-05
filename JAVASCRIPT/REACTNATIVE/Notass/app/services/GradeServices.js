@@ -2,29 +2,17 @@ let grades = [
   { subject: "Matemáticas", grade: "9.45" },
   { subject: "Fisíca", grade: "10" },
 ];
-export const saveGrade=(grade)=>{
-    grades.push(grade);
-    //console.log(grades);
-}
-export const getGrades=()=>{
-    return grades;
-}
-export const updateGrade=(nota)=>{
-    let gradeRetrieved = find(nota.subject);
-    if(gradeRetrieved!=null){
-        gradeRetrieved.grade = nota.grade;
-    }
-    console.log("Actualizar",grades)
-
-
-}
-const find=(subject)=>{
-    for(let i=0;i<grades.length;i++){
-       if( grades[i].subject==subject){
-        return grades[i];
-
-       }
-
-    }
-    return null;
-}
+export const saveGrade = (grade) => {
+  grades.push(grade);
+  //console.log(grades);
+};
+export const getGrades = () => {
+  return grades;
+};
+export const updateGrade = (nota) => {
+  let gradeIndex = grades.findIndex((g) => g.subject === nota.subject); // Es para  buscar el indice de la nota 
+  if (gradeIndex !== -1) { // Si el indice no es un -1 es por que se encontro la nota
+    // Crear una copia de la nota existente
+    grades[gradeIndex] = { ...grades[gradeIndex], grade: nota.grade }; // actualiza la nota
+  }
+};

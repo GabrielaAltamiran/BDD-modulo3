@@ -26,7 +26,7 @@ export const GradeFrom = ({ navigation, route }) => {
   const [grade, setGrade] = useState(gradeR == null ? null : gradeR + "");
   const [errorSubject, setErrorSubject] = useState();
   const [errorGrade, setErrorGrade] = useState();
-  const hasError = false;
+  let hasError = false;
 
   //------------------GUARDAR----------------------
   const save = () => {
@@ -43,6 +43,7 @@ export const GradeFrom = ({ navigation, route }) => {
       // Si no hay errores
   
       navigation.goBack();
+      route.params.refre();
     }
   };
   //------------------VALIDAR----------------------
@@ -84,6 +85,7 @@ export const GradeFrom = ({ navigation, route }) => {
       />
       <Button //--------------------BOTTON GUARDAR------------
         title="Guardar"
+        
         icon={{
           name: "save",
           type: "font-awesome",
@@ -105,5 +107,6 @@ const styles = StyleSheet.create({
   },
   buttonSave: {
     backgroundColor: "#32cd32",
+    borderRadius: 8,
   },
 });

@@ -1,5 +1,5 @@
 {
-  "name": "notas",
+  "name": "notass",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -9,15 +9,16 @@
     "web": "expo start --web"
   },
   "dependencies": {
-    "@react-navigation/native": "^7.0.13",
+    "@react-navigation/elements": "^2.2.4",
     "@react-navigation/native-stack": "^7.1.14",
-    "@react-navigation/stack": "^7.0.18",
     "@rneui/base": "^4.0.0-rc.7",
     "@rneui/themed": "^4.0.0-rc.8",
     "expo": "~52.0.11",
     "expo-status-bar": "~2.0.0",
+    "Q": "^1.0.0",
     "react": "18.3.1",
     "react-native": "0.76.3",
+    "react-native-elements": "^3.4.3",
     "react-native-vector-icons": "^10.2.0"
   },
   "devDependencies": {

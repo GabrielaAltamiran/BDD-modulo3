@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, Button } from "@rneui/base";
-import { saveGrade, updateGrade } from "../services/GradeServices"; //Asi se realiza cuando el archivo esta en otra carpeta
-
+import { saveGrade, updateGrade } from "../services/GradeServices";
 export const GradeForm = ({ navigation, route }) => {
   //Validacion para saber si es nuevo o es para editar
   let isNew = true;
@@ -23,12 +22,13 @@ export const GradeForm = ({ navigation, route }) => {
   const [grade, setGrade] = useState(gradeR == null ? null : gradeR + ""); //Si es null no se muestra nada
   const [errorSubject, setErrorSubjacte] = useState();
   const [errorGrade, setErrorGrade] = useState();
-  const [hasError, setHasError] = useState(false);
 
+  hasError = false;
   //FUNCION PARA GAURDAR
   const save = () => {
     setErrorGrade(null); //Borrar el error y quedaria limpio
     setErrorSubjacte(null);
+
     validate();
     if (!hasError) {
       if (isNew) {
@@ -37,19 +37,25 @@ export const GradeForm = ({ navigation, route }) => {
         updateGrade({ subject: subject, grade: grade });
       }
       navigation.goBack(); //VOLVER A LA PANTALLA ANTERIOR
+      route.params.refre();
     }
   };
   //FUNSION PARA VALIDAR
   const validate = () => {
-    setHasError(false); // Al inicio de la validación, aseguramos que no haya error
     if (subject == null || subject === "") {
-      setErrorSubject("Debe ingresar una materia");
-      setHasError(true); // Actualizamos el estado de error
+      setErrorSubjacte("Debe ingresar una materia");
+      // Actualizamos el estado de error
+        hasError = true;
     }
     let gradeFloat = parseFloat(grade);
-    if (gradeFloat == null || isNaN(gradeFloat) || gradeFloat < 0 || gradeFloat > 10) {
+    if (
+      gradeFloat == null ||
+      isNaN(gradeFloat) ||
+      gradeFloat < 0 ||
+      gradeFloat > 10
+    ) {
       setErrorGrade("Debe ingresar una nota entre 0 y 10");
-      setHasError(true); // Actualizamos el estado de error
+      hasError = true; // Actualizamos el estado de error
     }
   };
   return (

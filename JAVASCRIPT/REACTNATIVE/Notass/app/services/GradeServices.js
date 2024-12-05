@@ -14,14 +14,17 @@ export const updateGrade=(nota)=>{
     if(gradeRetrieved!=null){
         gradeRetrieved.grade = nota.grade;
     }
-    console.log("Arreglo",grades)
+    console.log("Actualizar",grades)
 
 
 }
 const find=(subject)=>{
     for(let i=0;i<grades.length;i++){
-        grades[i].subject==subject;
+       if( grades[i].subject==subject){
         return grades[i];
+
+       }
+
     }
     return null;
 }
